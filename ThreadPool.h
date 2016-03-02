@@ -10,7 +10,10 @@
 #include <functional>
 #include <stdexcept>
 
-
+/*
+ * function_wrapper from "C++ Concurrency in Action", Anthony Williams
+ * ©2012 by Manning Publications Co. All rights reserved.
+ */
 class function_wrapper
 {
 	struct impl_base {
@@ -75,13 +78,11 @@ inline ThreadPool::ThreadPool(size_t threads)
 	: stop(false)
 {
 	for (size_t i = 0; i<threads; ++i)
-		workers.emplace_back(
-			[this]
+		workers.emplace_back( [this]
 	{
 		for (;;)
 		{
 			function_wrapper task;
-
 			{
 				std::unique_lock<std::mutex> lock(this->queue_mutex);
 				this->condition.wait(lock,
@@ -91,7 +92,6 @@ inline ThreadPool::ThreadPool(size_t threads)
 				task = std::move(this->tasks.front());
 				this->tasks.pop();
 			}
-
 			task();
 		}
 	}
