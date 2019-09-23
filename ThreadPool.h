@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <vector>
 #include <queue>
 #include <memory>
@@ -9,6 +10,7 @@
 #include <future>
 #include <functional>
 #include <stdexcept>
+
 
 /*
  * function_wrapper from "C++ Concurrency in Action", Anthony Williams
